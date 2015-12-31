@@ -1,0 +1,46 @@
+{
+  "name": "ezlog",
+  "version": "0.0.1",
+  "description": "Sensible winston setup",
+  "main": "lib/index.js",
+  "scripts": {
+    "prepublish": "make",
+    "test": "make test && npm test"
+  },
+  "ezlog": {
+    "levels_name": "npm",
+    "loggers": {
+        "ROOT": {
+            "level": "silly"
+        }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kba/ezlog.git"
+  },
+  "keywords": [
+    "winston"
+  ],
+  "author": "kba",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kba/ezlog/issues"
+  },
+  "homepage": "https://github.com/kba/ezlog#readme",
+  "dependencies": {
+    "chokidar": "^1.4.2",
+    "deepmerge": "^0.2.10",
+    "log-pattern": "0.0.3",
+    "mkdirp": "^0.5.1",
+    "traverse": "^0.6.6",
+    "tv4": "^1.2.7",
+    "winston": "^2.1.1",
+    "winston-nedb": "^0.2.0",
+    "winston-timer": "0.0.2"
+  },
+  "devDependencies": {
+    "winston-nssocket": "^0.1.0",
+    "winstond": "0.0.2"
+  }
+}
