@@ -10,9 +10,9 @@
   "ezlog": {
     "levels_name": "npm",
     "loggers": {
-        "ROOT": {
-            "level": "silly"
-        }
+      "ROOT": {
+        "level": "silly"
+      }
     }
   },
   "repository": {
@@ -30,6 +30,7 @@
   "homepage": "https://github.com/kba/ezlog#readme",
   "dependencies": {
     "chokidar": "^1.4.2",
+    "commander": "^2.9.0",
     "deepmerge": "^0.2.10",
     "log-pattern": "0.0.3",
     "mkdirp": "^0.5.1",

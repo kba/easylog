@@ -164,13 +164,14 @@ Traverse(NonRequireSchema).forEach (obj) ->
 
 module.exports.ValidationLevel = ValidationLevel = { 'FRAGMENT', 'BASIC', 'FULL' }
 
-module.exports.validate = (validationLevel, config) ->
-	switch validationLevel
-		when ValidationLevel.FRAGMENT
-			return TV4.validateResult(config, NonRequireSchema)
-		when ValidationLevel.BASIC
-			return TV4.validateResult(config, BaseSchema)
-		when ValidationLevel.FULL
+module.exports.schema = schema = (validationLevel, config) ->
+	if validationLevel is ValidationLevel.BASIC
+		return BaseSchema
+	else if validationLevel is ValidationLevel.FRAGMENT
+		return NonRequireSchema
+	else if validationLevel is ValidationLevel.FULL
+		unless typeof config is 'object'
+			throw new Error("Must pass config option to generate schema at validationLevel #{validationLevel}.")
 			ConfigSchema = DeepMerge {}, BaseSchema
 			def = ConfigSchema.definitions
 			# level_colors / level_values
@@ -186,6 +187,9 @@ module.exports.validate = (validationLevel, config) ->
 			# transports -> transports_available
 			def.transports.items.enum = Object.keys(config.transports_available)
 			# console.log Inspect ConfigSchema, colors: true, depth: 3
-			return TV4.validateResult(config, ConfigSchema, true, true)
-		else
-			throw Error("Unknown validation level #{validationLevel}. Possible values: #{ValidationLevel}")
+			return ConfigSchema
+	else
+		throw new Error("Unknown validation level #{validationLevel}. Possible values: #{ValidationLevel}")
+
+module.exports.validate = validate = (validationLevel, config) ->
+	return TV4.validateResult(config, schema.apply(@, arguments))

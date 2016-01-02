@@ -16,6 +16,7 @@ log.error 'foo yay'
 # log.child('foo').debug 'foo yay'
 # log.start('bla')
 setTimeout ->
+	#
 	# log.stop_log('bla')
 	Winston.info 'yay'
 , 5000

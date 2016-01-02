@@ -1,4 +1,6 @@
 /lib
+/bin
 /test
 /node_modules
 /logs
+/schema-*.json
