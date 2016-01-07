@@ -1,10 +1,11 @@
-DeepMerge = require 'deepmerge'
-TV4 = require 'tv4'
-Traverse = require 'traverse'
-Inspect = require('util').inspect
+DeepMerge      = require 'deepmerge'
+TV4            = require 'tv4'
+Traverse       = require 'traverse'
+Inspect        = require('util').inspect
+DEFAULT_CONFIG = require '../lib/default-easylog.json'
 
 BaseSchema =
-	title: 'ezlog configuration'
+	title: 'easylog configuration'
 	$schema: "http://json-schema.org/draft-04/schema#",
 	# http://standards.freedesktop.org/icon-theme-spec/icon-theme-spec-latest.html#idm140276333767712
 	definitions: {}
@@ -172,24 +173,26 @@ module.exports.schema = schema = (validationLevel, config) ->
 	else if validationLevel is ValidationLevel.FULL
 		unless typeof config is 'object'
 			throw new Error("Must pass config option to generate schema at validationLevel #{validationLevel}.")
-			ConfigSchema = DeepMerge {}, BaseSchema
-			def = ConfigSchema.definitions
-			# level_colors / level_values
-			levelNames = Object.keys(config.level_values)
-			def.level.enum = levelNames
-			for prop, range of {level_colors:'string', level_values:'integer'}
-				delete def[prop].patternProperties
-				def[prop].required = levelNames
-				def[prop].properties = {}
-				def[prop].properties[k] = {type: range} for k in levelNames
-			# _transport_defaults -> transport_defaults
-			def._transport_defaults.enum = Object.keys(config.transport_defaults)
-			# transports -> transports_available
-			def.transports.items.enum = Object.keys(config.transports_available)
-			# console.log Inspect ConfigSchema, colors: true, depth: 3
-			return ConfigSchema
+		ConfigSchema = DeepMerge {}, BaseSchema
+		def = ConfigSchema.definitions
+		# level_colors / level_values
+		config.level_values or= {}
+		config.level_colors or= {}
+		levelNames = Object.keys(config.level_values)
+		def.level.enum = levelNames
+		for prop, range of {level_colors:'string', level_values:'integer'}
+			delete def[prop].patternProperties
+			def[prop].required = levelNames
+			def[prop].properties = {}
+			def[prop].properties[k] = {type: range} for k in levelNames
+		# _transport_defaults -> transport_defaults
+		def._transport_defaults.enum = Object.keys(config.transport_defaults)
+		# transports -> transports_available
+		def.transports.items.enum = Object.keys(config.transports_available)
+		# console.log Inspect ConfigSchema, colors: true, depth: 3
+		return ConfigSchema
 	else
 		throw new Error("Unknown validation level #{validationLevel}. Possible values: #{ValidationLevel}")
 
 module.exports.validate = validate = (validationLevel, config) ->
-	return TV4.validateResult(config, schema.apply(@, arguments))
+	return TV4.validateResult(schema.apply(@, arguments), config)

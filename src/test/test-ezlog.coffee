@@ -1,8 +1,8 @@
-ezlog = require('../lib')
-ezlog.setup()
+easylog = require('../lib')
+easylog.setup()
 log = Winston = require 'winston'
-log = ezlog(module)
-# log = ezlog(
+log = easylog(module)
+# log = easylog(
 #     filename: __filename,
 #     inject:
 #         'winston-nssocket': require('winston-nssocket')
@@ -21,7 +21,7 @@ setTimeout ->
 	Winston.info 'yay'
 , 5000
 
-# log.debug 'container', ezlog.getRoot().container
+# log.debug 'container', easylog.getRoot().container
 # log.debug 'container', Winston.loggers
 
-log.warn ezlog.getConfig().loggers
+log.warn easylog.getConfig().loggers

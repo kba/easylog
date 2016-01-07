@@ -1,9 +1,10 @@
 Fs        = require 'fs'
 Schema    = require '../lib/schema'
 Path      = require 'path'
-program = require 'commander'
+DeepMerge = require 'deepmerge'
+program   = require 'commander'
 PACKAGE_JSON = require('read-pkg-up').sync(cwd: @cwd).pkg
-DEFAULT_CONFIG = require '../lib/default-ezlog.json'
+DEFAULT_CONFIG = require '../lib/default-easylog.json'
 
 COMMANDS = {}
 program
@@ -25,8 +26,9 @@ program
 
 _dump = (val) -> JSON.stringify(val, null, 2)
 
+config = DEFAULT_CONFIG
 if program.config is true and not program.level
-	console.log _dump(DEFAULT_CONFIG)
+	console.log _dump(config)
 	process.exit 0
 else if not program.level
 	console.error("Must specify ValidationLevel")
@@ -36,7 +38,8 @@ else if program.level is Schema.ValidationLevel.FULL and not program.config
 	program.help()
 if typeof program.config is 'string'
 	try
-		config = JSON.parse(Fs.readFileSync(program.args[0]))
+		config = DeepMerge config, JSON.parse(Fs.readFileSync(program.config)).easylog
+		console.log config
 	catch e
 		console.error("Couldn't read config #{program.config}", e)
 		process.exit 2

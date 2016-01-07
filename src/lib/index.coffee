@@ -12,10 +12,10 @@ Winston = require 'winston'
 Inspect = require('util').inspect
 
 NODE_ENV = { 'development', 'production' }
-DEFAULT_CONFIG = require './default-ezlog.json'
+DEFAULT_CONFIG = require './default-easylog.json'
 Schema = require './schema'
 
-class EzLogRoot
+class EasyLogRoot
 
 	_throw: (msg, meta={}) ->
 		@_log.error.apply @_log, arguments
@@ -23,10 +23,10 @@ class EzLogRoot
 
 	_loadConfigs : ->
 		configs = [DEFAULT_CONFIG]
-		# package.json / ezlog
-		# ezlog.json
-		# ezlog-{process.env.NODE_ENV}.json
-		json_locations = ['package.json', 'ezlog.json', "ezlog-#{@node_env}.json"]
+		# package.json / easylog
+		# easylog.json
+		# easylog-{process.env.NODE_ENV}.json
+		json_locations = ['package.json', 'easylog.json', "easylog-#{@node_env}.json"]
 		for json_location in @config_file_candidates
 			fname = FindUp.sync json_location, {cwd: @cwd}
 			if not fname
@@ -38,13 +38,13 @@ class EzLogRoot
 				_config = JSON.parse(Fs.readFileSync(json_location))
 			catch e
 				@_log.error "Parsing error", fname
-			unless _config.ezlog
-				@_log.warn "No 'ezlog' element", fname
+			unless _config.easylog
+				@_log.warn "No 'easylog' element", fname
 				continue
-			@_log.info "Loading config: #{fname}: ", _config.ezlog
-			unless @_validate(Schema.ValidationLevel.FRAGMENT, _config.ezlog, fname).valid
+			@_log.info "Loading config: #{fname}: ", _config.easylog
+			unless @_validate(Schema.ValidationLevel.FRAGMENT, _config.easylog, fname).valid
 				continue
-			configs.push _config.ezlog
+			configs.push _config.easylog
 		@config or= {}
 		loaded_config = {}
 		for _config in configs
@@ -175,7 +175,7 @@ class EzLogRoot
 
 	constructor: (options={}) ->
 		@node_env                = process.env.NODE_ENV or NODE_ENV.development
-		@ezlog_level             = options.ezlog_level or 'debug'
+		@easylog_level             = options.easylog_level or 'debug'
 		@root_dir_files          = options.root_dir_files or ['package.json', '.git', '.hg']
 		@cwd                     = options.cwd or @_findRootDir()
 		@logdir                  = options.logdir or Path.join(@cwd, 'logs')
@@ -186,37 +186,37 @@ class EzLogRoot
 		@package_json            = options.package_json or ReadPkgUp.sync(cwd: @cwd).pkg or {name:'my-app'}
 		@config_file_candidates  = [
 			'package.json'
-			'ezlog.json'
-			Path.join(process.env.HOME, '.config', @package_json.name, 'ezlog.json')
-			"ezlog-#{@node_env}.json"
+			'easylog.json'
+			Path.join(process.env.HOME, '.config', @package_json.name, 'easylog.json')
+			"easylog-#{@node_env}.json"
 		]
 		@_log = @injected_deps.winston
-		@_log.level = @ezlog_level
+		@_log.level = @easylog_level
 		MkdirP.sync @logdir
 		@reload()
 	
 	reload: ->
 		@_stop_watching()
 		@_loadConfigs()
-		@_log.silly 'EzLog Configuration:', JSON.stringify(@config, null, 2)
+		@_log.silly 'EasyLog Configuration:', JSON.stringify(@config, null, 2)
 		@_setupContainer()
-		@_log.info 'Reloaded ezlog setup'
+		@_log.info 'Reloaded easylog setup'
 		@_start_watching()
 
-ezLog = null
+easyLog = null
 
-module.exports = EzLog = (options={}) ->
-	EzLog.ensureSetup()
-	options.label or= ezLog.root_label unless options.filename
-	return ezLog.getLogger(options)
+module.exports = EasyLog = (options={}) ->
+	EasyLog.ensureSetup()
+	options.label or= easyLog.root_label unless options.filename
+	return easyLog.getLogger(options)
 
-EzLog.ensureSetup = ->
-	ezLog = EzLog.setup(options) unless ezLog
+EasyLog.ensureSetup = ->
+	easyLog = EasyLog.setup(options) unless easyLog
 
-EzLog.setup = (options={}) ->
-	ezLog = new EzLogRoot(options)
+EasyLog.setup = (options={}) ->
+	easyLog = new EasyLogRoot(options)
 
-EzLog.getRoot = -> ezLog
+EasyLog.getRoot = -> easyLog
 
-EzLog.getConfig = ->
-	return ezLog.config
+EasyLog.getConfig = ->
+	return easyLog.config

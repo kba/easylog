@@ -52,5 +52,5 @@ json-schema: bin schema-basic.json schema-fragment.json
 default-config.json:
 
 schema-%.json:
-	./bin/ezlog-schema --level=$* > $@
+	./bin/easylog-schema --level=$* > $@
 

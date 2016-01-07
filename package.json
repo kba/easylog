@@ -1,13 +1,13 @@
 {
-  "name": "ezlog",
+  "name": "easylog",
   "version": "0.0.1",
   "description": "Sensible winston setup",
   "main": "lib/index.js",
   "scripts": {
     "prepublish": "make",
-    "test": "make test && npm test"
+    "test": "make test && "
   },
-  "ezlog": {
+  "easylog": {
     "levels_name": "npm",
     "loggers": {
       "ROOT": {
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kba/ezlog.git"
+    "url": "git+https://github.com/kba/easylog.git"
   },
   "keywords": [
     "winston"
@@ -25,9 +25,9 @@
   "author": "kba",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kba/ezlog/issues"
+    "url": "https://github.com/kba/easylog/issues"
   },
-  "homepage": "https://github.com/kba/ezlog#readme",
+  "homepage": "https://github.com/kba/easylog#readme",
   "dependencies": {
     "chokidar": "^1.4.2",
     "commander": "^2.9.0",
