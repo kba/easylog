@@ -206,11 +206,11 @@ class EasyLogRoot
 easyLog = null
 
 module.exports = EasyLog = (options={}) ->
-	EasyLog.ensureSetup()
+	EasyLog.ensureSetup(options)
 	options.label or= easyLog.root_label unless options.filename
 	return easyLog.getLogger(options)
 
-EasyLog.ensureSetup = ->
+EasyLog.ensureSetup = (options) ->
 	easyLog = EasyLog.setup(options) unless easyLog
 
 EasyLog.setup = (options={}) ->
