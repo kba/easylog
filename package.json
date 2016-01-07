@@ -32,7 +32,7 @@
     "chokidar": "^1.4.2",
     "commander": "^2.9.0",
     "deepmerge": "^0.2.10",
-    "log-pattern": "0.0.3",
+    "log-pattern": "0.0.4",
     "mkdirp": "^0.5.1",
     "traverse": "^0.6.6",
     "tv4": "^1.2.7",
