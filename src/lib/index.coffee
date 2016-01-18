@@ -6,7 +6,6 @@ DeepMerge = require 'deepmerge'
 Fs = require 'fs'
 Path = require 'path'
 MkdirP = require 'mkdirp'
-WinstonNedb =  require('winston-nedb').Nedb
 WinstonTimer = require 'winston-timer'
 Winston = require 'winston'
 Inspect = require('util').inspect
@@ -116,7 +115,8 @@ class EasyLogRoot
 		transports = @_setupTransports('/', DeepMerge(@config, {filename: @cwd, child: null}))
 		@container = new @injected_deps.winston.Container({transports})
 		@container.default = {transports}
-		@container.rootLogger = @_log = @getLogger(label: @root_label)
+		@container.rootLogger = @getLogger(label: @root_label)
+		@_log = @getLogger(label: 'easylog', level: @easylog_level)
 		if @override_winston
 			@injected_deps.winston.log = =>
 				@container.rootLogger.log.apply @container.rootLogger, arguments
@@ -134,7 +134,7 @@ class EasyLogRoot
 		opts.filename or= '/'
 		opts.cwd = process.cwd
 		label = LogPattern.formatter(opts)()
-		@_log.silly "Filename '#{opts.filename}' -> Label: '#{label}'"
+		# @_log.silly "Filename '#{opts.filename}' -> Label: '#{label}'"
 		return label
 
 	_extend_logger: (logger, options) ->
@@ -150,7 +150,7 @@ class EasyLogRoot
 			@_throw("Must pass an object with a 'filename' or a 'label' property, such as the global 'module'")
 		loggerName = options.label or @_label_for_filename(@config.label_pattern, options)
 		@config.loggers[loggerName] or= {}
-		for k in ['filename', 'child', 'label']
+		for k in ['filename', 'child', 'label', 'level']
 			@config.loggers[loggerName][k] = options[k] if options[k]
 		@container.add(loggerName, transports: @_setupTransports(loggerName, @config.loggers[loggerName]))
 		ret = @container.get(loggerName,
@@ -175,7 +175,7 @@ class EasyLogRoot
 
 	constructor: (options={}) ->
 		@node_env                = process.env.NODE_ENV or NODE_ENV.development
-		@easylog_level             = options.easylog_level or 'debug'
+		@easylog_level           = options.easylog_level or 'debug'
 		@root_dir_files          = options.root_dir_files or ['package.json', '.git', '.hg']
 		@cwd                     = options.cwd or @_findRootDir()
 		@logdir                  = options.logdir or Path.join(@cwd, 'logs')
@@ -190,17 +190,19 @@ class EasyLogRoot
 			Path.join(process.env.HOME, '.config', @package_json.name, 'easylog.json')
 			"easylog-#{@node_env}.json"
 		]
+		oldLevel = @injected_deps.winston.level
 		@_log = @injected_deps.winston
 		@_log.level = @easylog_level
 		MkdirP.sync @logdir
 		@reload()
+		@injected_deps.winston.level = oldLevel
 	
 	reload: ->
 		@_stop_watching()
 		@_loadConfigs()
 		@_log.silly 'EasyLog Configuration:', JSON.stringify(@config, null, 2)
 		@_setupContainer()
-		@_log.info 'Reloaded easylog setup'
+		@_log.debug 'Reloaded easylog setup'
 		@_start_watching()
 
 easyLog = null
