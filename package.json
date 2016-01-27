@@ -33,7 +33,7 @@
     "commander": "^2.9.0",
     "deepmerge": "^0.2.10",
     "find-up": "^1.1.0",
-    "log-pattern": "0.0.7",
+    "log-pattern": "0.0.8",
     "mkdirp": "^0.5.1",
     "read-pkg-up": "^1.0.1",
     "traverse": "^0.6.6",
