@@ -53,4 +53,3 @@ default-config.json:
 
 schema-%.json:
 	./bin/easylog-schema --level=$* > $@
-
