@@ -1,6 +1,6 @@
 {
   "name": "easylog",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Sensible winston setup",
   "main": "lib/index.js",
   "scripts": {
