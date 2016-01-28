@@ -29,16 +29,16 @@ class EasyLogRoot
 		for json_location in @config_file_candidates
 			fname = FindUp.sync json_location, {cwd: @cwd}
 			if not fname
-				@_log.debug "Not found", json_location
+				@_log.silly "Not found", json_location
 				continue
 			@_files_to_watch.push json_location
-			@_log.debug "Try loading config: #{fname}."
+			@_log.silly "Try loading config: #{fname}."
 			try
 				_config = JSON.parse(Fs.readFileSync(json_location))
 			catch e
 				@_log.error "Parsing error", fname
 			unless _config.easylog
-				@_log.warn "No 'easylog' element", fname
+				@_log.silly "No 'easylog' element", fname
 				continue
 			@_log.info "Loading config: #{fname}: ", _config.easylog
 			unless @_validate(Schema.ValidationLevel.FRAGMENT, _config.easylog, fname).valid
@@ -60,7 +60,7 @@ class EasyLogRoot
 				@config[k] = loaded_config[k]
 
 	_validate: (level, config, fname) ->
-		@_log.debug "Validating #{level}", fname
+		@_log.silly "Validating #{level}", fname
 		result = Schema.validate(level, config)
 		unless result.valid
 			delete result.error?.stack
