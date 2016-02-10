@@ -34,9 +34,9 @@ class EasyLogRoot
 			@_files_to_watch.push json_location
 			@_log.silly "Try loading config: #{fname}."
 			try
-				_config = JSON.parse(Fs.readFileSync(json_location))
-			catch e
-				@_log.error "Parsing error", fname
+				_config = JSON.parse(Fs.readFileSync(fname, 'utf-8'))
+			catch error
+				@_log.error "Parsing error in #{fname}:", error
 			unless _config.easylog
 				@_log.silly "No 'easylog' element", fname
 				continue
