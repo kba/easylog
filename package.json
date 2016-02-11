@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "prepublish": "make",
-    "test": "make test && "
+    "test": "make test && node test/*js"
   },
   "easylog": {
     "levels_name": "npm",

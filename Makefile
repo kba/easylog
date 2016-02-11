@@ -29,7 +29,7 @@ lib/%.js: src/lib/%.coffee
 	@$(MKDIR) $(shell dirname $@)
 	$(COFFEE) $< > $@
 
-test: ${TEST_TARGETS}
+test: ${TEST_TARGETS} lib
 	$(CP) src/test test
 	@find test -type f -name '*.coffee' -exec rm {} \;
 
