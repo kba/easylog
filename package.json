@@ -15,6 +15,9 @@
       }
     }
   },
+  "bin": {
+      "easylog-schema": "bin/easylog-schema"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kba/easylog.git"
