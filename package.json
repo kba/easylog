@@ -1,6 +1,6 @@
 {
   "name": "easylog",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Sensible winston setup",
   "main": "lib/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     }
   },
   "bin": {
-      "easylog-schema": "bin/easylog-schema"
+    "easylog-schema": "bin/easylog-schema"
   },
   "repository": {
     "type": "git",
