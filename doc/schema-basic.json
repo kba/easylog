@@ -1,0 +1,199 @@
+{
+  "title": "easylog configuration",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "transports": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "label_pattern": {
+      "name": "Pattern of a label",
+      "type": "string"
+    },
+    "transport_defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-z][-a-z_0-9]+$": {
+          "type": "object",
+          "$ref": "#/definitions/transport_default"
+        }
+      }
+    },
+    "transport_default": {
+      "additionalProperties": false,
+      "properties": {
+        "label_pattern": {
+          "type": "string",
+          "$ref": "#/definitions/label_pattern"
+        },
+        "filename_pattern": {
+          "type": "string",
+          "$ref": "#/definitions/filename_pattern"
+        },
+        "formatter_pattern": {
+          "type": "string",
+          "$ref": "#/definitions/formatter_pattern"
+        },
+        "silent": {
+          "type": "boolean"
+        },
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "maxsize": {
+          "type": "integer"
+        },
+        "level": {
+          "type": "string",
+          "$ref": "#/definitions/level"
+        },
+        "styles": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "_transport_class": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "_transport_class"
+      ]
+    },
+    "loggers": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "_root": {
+          "type": "object"
+        }
+      },
+      "patternProperties": {
+        ".*": {
+          "type": "object",
+          "properties": {
+            "filename": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "level": {
+              "type": "string",
+              "$ref": "#/definitions/level"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "transports_available": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-z][-a-z_0-9]+$": {
+          "type": "object",
+          "$ref": "#/definitions/transport_available"
+        }
+      }
+    },
+    "level": {
+      "type": "string"
+    },
+    "_transport_defaults": {
+      "type": "string"
+    },
+    "transport_available": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "_transport_defaults": {
+          "$ref": "#/definitions/_transport_defaults"
+        }
+      },
+      "required": [
+        "_transport_defaults"
+      ]
+    },
+    "level_values": {
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-z]+$": {
+          "type": "integer"
+        }
+      },
+      "minProperties": 1
+    },
+    "level_colors": {
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-z]+$": {
+          "type": "string"
+        }
+      },
+      "minProperties": 1
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "levels_name": {
+      "type": "string",
+      "default": "npm",
+      "enum": [
+        "cli",
+        "npm",
+        "syslog"
+      ]
+    },
+    "level_values": {
+      "type": "object",
+      "$ref": "#/definitions/level_values"
+    },
+    "level": {
+      "type": "string",
+      "$ref": "#/definitions/level"
+    },
+    "level_colors": {
+      "type": "object",
+      "$ref": "#/definitions/level_colors"
+    },
+    "label_pattern": {
+      "type": "string",
+      "$ref": "#/definitions/label_pattern"
+    },
+    "transport_defaults": {
+      "type": "object",
+      "$ref": "#/definitions/transport_defaults"
+    },
+    "transports": {
+      "type": "object",
+      "$ref": "#/definitions/transports"
+    },
+    "transports_available": {
+      "type": "object",
+      "$ref": "#/definitions/transports_available"
+    },
+    "loggers": {
+      "type": "object",
+      "$ref": "#/definitions/loggers"
+    }
+  },
+  "required": [
+    "levels_name",
+    "level_values",
+    "level_colors",
+    "transport_defaults",
+    "transports_available",
+    "label_pattern",
+    "transports"
+  ]
+}
