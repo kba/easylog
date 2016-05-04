@@ -19,7 +19,7 @@ setTimeout ->
 	#
 	# log.stop_log('bla')
 	Winston.info 'yay'
-, 5000
+, 3000
 
 # log.debug 'container', easylog.getRoot().container
 # log.debug 'container', Winston.loggers
