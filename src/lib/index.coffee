@@ -37,7 +37,7 @@ class EasyLogRoot
 				_config = JSON.parse(Fs.readFileSync(fname, 'utf-8'))
 			catch error
 				@_log.error "Parsing error in #{fname}:", error
-			unless _config.easylog
+			if not _config or not _config.easylog
 				@_log.silly "No 'easylog' element", fname
 				continue
 			@_log.info "Loading config: #{fname}: ", _config.easylog
