@@ -75,6 +75,13 @@ config will be computed on the fly, see
 [./doc/default-config.json](./doc/default-config.json) for a static copy of the
 default configuration file.
 
+### Log the Logging
+
+It can be tedious to debug why logging isn't working the way it's supposed to.
+You'd find yourself falling back to `console.log` et al to log the problems
+that prevent logging. To prevent you from this particular type of yak-shaving,
+`easylog` by default logs its own startup and every reload of configuration
+with level `DEBUG`.
 
 ## API
 
@@ -92,7 +99,17 @@ by defualt. See [Log the Logging](#log-the-logging).
 ### cwd
 ### logdir
 ### root_label
+
+The label of the root logger, by default `ROOT`.
+
 ### override_winston
+
+If set, `easylog` will override the logger singleton that is returned when you
+`require('winston')`. This has the advantage that it will also enable your
+logging configuration for other logger that use winston. If set to `true` (the
+default) then `winston.log` will be overridden with easylog's root logger's
+`log` method.
+
 ### injected_deps
 ### injected_deps.winston
 ### package_json
