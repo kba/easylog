@@ -4,25 +4,24 @@ easylog
 A wrapper around winston to simplify configuration and log beautifully.
 
 ## Table of Contents
+<!-- :GenTocGFM -->
 * [Motivation](#motivation)
 * [Installation](#installation)
 * [Usage](#usage)
 * [Configuration](#configuration)
-  * [Log the Logging](#log-the-logging)
-  * [Log Patterns](#log-patterns)
+	* [Log the Logging](#log-the-logging)
 * [API](#api)
-  * [node_env](#node_env)
-  * [easylog_level](#easylog_level)
-  * [root_dir_files](#root_dir_files)
-  * [cwd](#cwd)
-  * [logdir](#logdir)
-  * [root_label](#root_label)
-  * [override_winston](#override_winston)
-  * [injected_deps](#injected_deps)
-  * [injected_deps.winston](#injected_deps.winston)
-  * [package_json](#package_json)
-  * [config_file_candidates](#config_file_candidates)
-* [Acknowledgements](#acknowledgements)
+	* [node_env](#node_env)
+	* [easylog_level](#easylog_level)
+	* [root_dir_files](#root_dir_files)
+	* [cwd](#cwd)
+	* [logdir](#logdir)
+	* [root_label](#root_label)
+	* [override_winston](#override_winston)
+	* [injected_deps](#injected_deps)
+	* [injected_deps.winston](#injected_depswinston)
+	* [package_json](#package_json)
+	* [config_file_candidates](#config_file_candidates)
 
 ## Motivation
 
@@ -74,6 +73,36 @@ only fragments of the configuraiton in the mentioned locations, the default
 config will be computed on the fly, see
 [./doc/default-config.json](./doc/default-config.json) for a static copy of the
 default configuration file.
+
+### Log Patterns
+
+`easylog` expects the log messages described as
+[log-pattern](https://github.com/kba/log-pattern) macros. Please refer to the
+[documentation of pre-defined
+macros](https://github.com/kba/log-pattern/blob/master/MACROS.md) there.
+
+
+The default pattern for the log entry is:
+
+```js 
+'[%levelColor(%pad{-5}(%LEVEL))] ' +
+'%levelColor(%date)' +
+' |%label| ' +
+'%message' +
+'%meta'
+```
+
+The default pattern for the label is:
+
+```js
+%pkg{name}' +
+'%@{sep}(:)' +
+'%@{name}(%path{%name})' +
+'%?(%config{child})(' +
+  '%@{sep}(#)' +
+  '%@{child}(%config{child})' +
+')'
+```
 
 ### Log the Logging
 
