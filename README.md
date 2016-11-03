@@ -85,23 +85,13 @@ macros](https://github.com/kba/log-pattern/blob/master/MACROS.md) there.
 The default pattern for the log entry is:
 
 ```js 
-'[%levelColor(%pad{-5}(%LEVEL))] ' +
-'%levelColor(%date)' +
-' |%label| ' +
-'%message' +
-'%meta'
+`[%levelColor(%pad{-5}(%LEVEL))] %levelColor(%date) |%label| %message %meta`
 ```
 
 The default pattern for the label is:
 
 ```js
-%pkg{name}' +
-'%@{sep}(:)' +
-'%@{name}(%path{%name})' +
-'%?(%config{child})(' +
-  '%@{sep}(#)' +
-  '%@{child}(%config{child})' +
-')'
+`%pkg{name} %@{sep}(:) %@{name}(%path{%name}) %?(%config{child})( %@{sep}(#) %@{child}(%config{child}))`
 ```
 
 ### Log the Logging
